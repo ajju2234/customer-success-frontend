@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  @apply bg-slate-100 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+}
+
+@layer components {
+  /* form field label + inline validation error (used alongside antd inputs) */
+  .label {
+    @apply mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300;
+  }
+  .field-error {
+    @apply mt-1 text-xs text-red-600 dark:text-red-400;
+  }
+
+  /* surfaces */
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  /* tables */
+  .table-wrap {
+    @apply overflow-x-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900;
+  }
+  .table {
+    @apply w-full text-sm;
+  }
+  .table thead {
+    @apply bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-800/60 dark:text-slate-400;
+  }
+  .table th {
+    @apply px-4 py-3 font-medium;
+  }
+  .table td {
+    @apply px-4 py-3;
+  }
+  .table tbody tr {
+    @apply border-t border-slate-100 transition hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50;
+  }
+
+  /* loading skeleton */
+  .skeleton {
+    @apply animate-pulse rounded bg-slate-200 dark:bg-slate-700;
+  }
+}
