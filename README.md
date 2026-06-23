@@ -10,7 +10,7 @@ interaction management, AI insight views, and a metrics dashboard with charts.
 
 ## 🚀 Live Demo
 
-**App:** https://customer-success-frontend-iota.vercel.app — every demo account's password is **`Test@1234`**.
+**App:** https://customerorbit.vercel.app — every demo account's password is **`Test@1234`**.
 
 | Role | Email |
 |------|-------|
@@ -29,8 +29,9 @@ Recharts · Tailwind CSS.
 
 ## ✨ What's here
 
-- **Auth flow** — login/register, JWT access token in memory + httpOnly refresh cookie, Axios
-  interceptor that auto-refreshes on 401; protected routes via `middleware.ts`.
+- **Auth flow** — login / register / **forgot & reset password**, JWT access token in memory +
+  httpOnly refresh cookie, Axios interceptor that auto-refreshes on 401; protected routes guarded
+  client-side (the access token is rehydrated from the refresh cookie on load).
 - **Customers** — list (search, status filter, pagination), create/edit (Zod-validated), detail, delete.
 - **Interactions** — list with filters, create (notes → AI insight), detail with an AI insight panel
   (summary, sentiment, action items, risks) + regenerate + fallback state.
@@ -62,16 +63,15 @@ pnpm dev      # http://localhost:3000
 ```
 src/
 ├── app/
-│   ├── (auth)/        # login, register
-│   └── (app)/         # dashboard, customers (+ [id]), interactions (+ [id])
-├── store/             # Redux Toolkit store + slices
+│   ├── (auth)/        # login, register, forgot-password, reset-password
+│   └── (app)/         # dashboard, customers (+ [id]), interactions (+ [id]), profile
+├── store/             # Redux Toolkit store + slices (auth, customers, interactions, dashboard)
 ├── lib/               # axios (interceptors + refresh), api, types, zod validation
-├── components/        # forms, modals, insight panel, ui primitives
-└── middleware.ts      # protected-route gate
+└── components/        # forms, modals, insight panel, theme toggle, ui primitives
 ```
 
 ## 📝 Notes
 
 Access token is kept in memory (not localStorage) for XSS safety and re-obtained on load via the
-refresh cookie. Validation mirrors the backend (Zod ↔ Pydantic). Built with `output: "standalone"`
-for a small Docker image.
+refresh cookie. Validation mirrors the backend (Zod ↔ Pydantic). Light/dark theme toggle (top-right).
+Built with `output: "standalone"` for a small Docker image.
