@@ -19,7 +19,10 @@ export function useConfirm() {
         content: opts.message,
         okText: opts.confirmLabel || "Confirm",
         cancelText: "Cancel",
-        okButtonProps: opts.danger ? { danger: true } : undefined,
+        centered: true,
+        width: 440,
+        okButtonProps: opts.danger ? { danger: true, size: "middle" } : { size: "middle" },
+        cancelButtonProps: { size: "middle" },
         onOk: () => resolve(true),
         onCancel: () => resolve(false),
       });

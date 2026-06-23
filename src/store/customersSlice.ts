@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { apiError, CustomerFilters, customersApi } from "@/lib/api";
 import { Customer } from "@/lib/types";
+import { login, logout } from "./authSlice";
 
 interface CustomersState {
   items: Customer[];
@@ -108,7 +109,10 @@ const customersSlice = createSlice({
       })
       .addCase(fetchCustomer.fulfilled, (state, action) => {
         state.current = action.payload;
-      });
+      })
+      // Clear data on auth change so one user never sees another's rows.
+      .addCase(login.fulfilled, () => initialState)
+      .addCase(logout.fulfilled, () => initialState);
   },
 });
 

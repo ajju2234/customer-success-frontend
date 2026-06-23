@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { apiError, InteractionFilters, interactionsApi } from "@/lib/api";
 import { Interaction } from "@/lib/types";
+import { login, logout } from "./authSlice";
 
 interface InteractionsState {
   items: Interaction[];
@@ -116,7 +117,9 @@ const interactionsSlice = createSlice({
       })
       .addCase(regenerateInsight.fulfilled, (state, action) => {
         state.current = action.payload;
-      });
+      })
+      .addCase(login.fulfilled, () => initialState)
+      .addCase(logout.fulfilled, () => initialState);
   },
 });
 

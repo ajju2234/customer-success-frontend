@@ -20,12 +20,10 @@ function ThemeBridge({ children }: { children: React.ReactNode }) {
   // null until initialised, so we never persist a wrong value over the saved one.
   const [dark, setDark] = useState<boolean | null>(null);
 
-  // Initialise from the class the inline script already applied (falls back to storage/OS).
+  // Initialise from the saved preference; default to light (not OS preference).
   useEffect(() => {
     if (typeof document === "undefined") return;
-    const saved = localStorage.getItem("theme");
-    const fromClass = document.documentElement.classList.contains("dark");
-    setDark(saved ? saved === "dark" : fromClass);
+    setDark(localStorage.getItem("theme") === "dark");
   }, []);
 
   // Persist + reflect onto <html> only after we know the real value.

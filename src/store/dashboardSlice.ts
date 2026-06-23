@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { apiError, dashboardApi } from "@/lib/api";
 import { DashboardMetrics } from "@/lib/types";
+import { login, logout } from "./authSlice";
 
 interface DashboardState {
   metrics: DashboardMetrics | null;
@@ -39,7 +40,9 @@ const dashboardSlice = createSlice({
       .addCase(fetchMetrics.rejected, (state, action) => {
         state.status = "error";
         state.error = action.payload as string;
-      });
+      })
+      .addCase(login.fulfilled, () => initialState)
+      .addCase(logout.fulfilled, () => initialState);
   },
 });
 
