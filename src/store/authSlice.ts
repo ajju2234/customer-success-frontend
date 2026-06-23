@@ -25,6 +25,8 @@ export const login = createAsyncThunk(
   }
 );
 
+// Register creates the account but does NOT log the user in — they then sign in
+// explicitly. We clear the cookie the backend set on register so no auto-session.
 export const register = createAsyncThunk(
   "auth/register",
   async (
@@ -32,9 +34,10 @@ export const register = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const res = await authApi.register(data);
-      tokenStore.set(res.access_token);
-      return res.user;
+      await authApi.register(data);
+      await authApi.logout().catch(() => {});
+      tokenStore.set(null);
+      return true;
     } catch (e) {
       return rejectWithValue(apiError(e, "Registration failed"));
     }
@@ -83,21 +86,28 @@ const authSlice = createSlice({
         state.status = "unauthenticated";
       });
 
-    for (const thunk of [login, register]) {
-      builder
-        .addCase(thunk.pending, (state) => {
-          state.status = "loading";
-          state.error = null;
-        })
-        .addCase(thunk.fulfilled, (state, action) => {
-          state.user = action.payload;
-          state.status = "authenticated";
-        })
-        .addCase(thunk.rejected, (state, action) => {
-          state.status = "unauthenticated";
-          state.error = (action.payload as string) || "Authentication failed";
-        });
-    }
+    builder
+      .addCase(login.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = "authenticated";
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.status = "unauthenticated";
+        state.error = (action.payload as string) || "Authentication failed";
+      });
+
+    // Register does not authenticate — only surface its error state.
+    builder
+      .addCase(register.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.error = (action.payload as string) || "Registration failed";
+      });
   },
 });
 

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 
+import { useToast } from "@/components/Toast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { register as registerThunk } from "@/store/authSlice";
 import { RegisterForm, registerSchema } from "@/lib/validation";
@@ -19,7 +20,8 @@ const ROLE_OPTIONS = [
 export default function RegisterPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { error, status } = useAppSelector((s) => s.auth);
+  const toast = useToast();
+  const { error } = useAppSelector((s) => s.auth);
   const {
     control,
     handleSubmit,
@@ -31,7 +33,10 @@ export default function RegisterPage() {
 
   async function onSubmit(data: RegisterForm) {
     const res = await dispatch(registerThunk(data));
-    if (registerThunk.fulfilled.match(res)) router.replace("/dashboard");
+    if (registerThunk.fulfilled.match(res)) {
+      toast.success("Account created — please sign in");
+      router.replace("/login");
+    }
   }
 
   return (
@@ -87,7 +92,7 @@ export default function RegisterPage() {
         <p className="mt-1 text-xs text-slate-400">Role is selectable here for demo/testing of RBAC.</p>
       </div>
 
-      {error && status === "unauthenticated" && <Alert type="error" message={error} showIcon />}
+      {error && <Alert type="error" message={error} showIcon />}
 
       <Button type="primary" htmlType="submit" size="large" block loading={isSubmitting}>
         Create account

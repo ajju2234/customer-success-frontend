@@ -14,13 +14,17 @@ import {
 
 export function apiError(err: unknown, fallback = "Something went wrong"): string {
   const e = err as AxiosError<{ detail?: unknown }>;
+  // No HTTP response = network/CORS/timeout — show a friendly message, not "Network Error".
+  if (e?.code === "ERR_NETWORK" || (e && !e.response)) {
+    return "Unable to reach the server. Please check your connection and try again.";
+  }
   const detail = e?.response?.data?.detail;
   if (typeof detail === "string") return detail;
   if (Array.isArray(detail) && detail.length) {
     const first = detail[0] as { msg?: string };
     return first?.msg || fallback;
   }
-  return e?.message || fallback;
+  return fallback;
 }
 
 // ---- auth ----
@@ -31,6 +35,12 @@ export const authApi = {
     api.post<AuthResponse>("/auth/login", data).then((r) => r.data),
   refresh: () => api.post<AuthResponse>("/auth/refresh", {}).then((r) => r.data),
   logout: () => api.post("/auth/logout").then((r) => r.data),
+  forgotPassword: (email: string) =>
+    api
+      .post<{ message: string; reset_token: string | null }>("/auth/forgot-password", { email })
+      .then((r) => r.data),
+  resetPassword: (token: string, new_password: string) =>
+    api.post("/auth/reset-password", { token, new_password }).then((r) => r.data),
 };
 
 // ---- customers ----
