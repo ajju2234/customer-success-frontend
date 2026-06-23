@@ -63,7 +63,7 @@ function ResetPasswordInner() {
             control={control}
             name="password"
             render={({ field }) => (
-              <Input.Password {...field} size="large" placeholder="At least 8 characters" status={errors.password ? "error" : ""} />
+              <Input.Password {...field} size="large" autoComplete="new-password" placeholder="At least 8 characters" status={errors.password ? "error" : ""} />
             )}
           />
           {errors.password && <p className="field-error">{errors.password.message}</p>}
@@ -75,7 +75,7 @@ function ResetPasswordInner() {
             control={control}
             name="confirm"
             render={({ field }) => (
-              <Input.Password {...field} size="large" placeholder="Re-enter password" status={errors.confirm ? "error" : ""} />
+              <Input.Password {...field} size="large" autoComplete="new-password" placeholder="Re-enter password" status={errors.confirm ? "error" : ""} />
             )}
           />
           {errors.confirm && <p className="field-error">{errors.confirm.message}</p>}

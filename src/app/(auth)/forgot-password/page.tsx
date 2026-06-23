@@ -58,7 +58,7 @@ export default function ForgotPasswordPage() {
               control={control}
               name="email"
               render={({ field }) => (
-                <Input {...field} size="large" type="email" placeholder="you@company.com" status={errors.email ? "error" : ""} />
+                <Input {...field} size="large" type="email" autoComplete="email" placeholder="you@company.com" status={errors.email ? "error" : ""} />
               )}
             />
             {errors.email && <p className="field-error">{errors.email.message}</p>}

@@ -42,7 +42,7 @@ export default function LoginPage() {
             control={control}
             name="email"
             render={({ field }) => (
-              <Input {...field} size="large" type="email" placeholder="you@company.com" status={errors.email ? "error" : ""} />
+              <Input {...field} size="large" type="email" autoComplete="email" placeholder="you@company.com" status={errors.email ? "error" : ""} />
             )}
           />
           {errors.email && <p className="field-error">{errors.email.message}</p>}
@@ -54,7 +54,7 @@ export default function LoginPage() {
             control={control}
             name="password"
             render={({ field }) => (
-              <Input.Password {...field} size="large" placeholder="••••••••" status={errors.password ? "error" : ""} />
+              <Input.Password {...field} size="large" autoComplete="current-password" placeholder="••••••••" status={errors.password ? "error" : ""} />
             )}
           />
           {errors.password && <p className="field-error">{errors.password.message}</p>}

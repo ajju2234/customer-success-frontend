@@ -64,7 +64,7 @@ export default function RegisterPage() {
           control={control}
           name="email"
           render={({ field }) => (
-            <Input {...field} size="large" type="email" placeholder="you@company.com" status={errors.email ? "error" : ""} />
+            <Input {...field} size="large" type="email" autoComplete="email" placeholder="you@company.com" status={errors.email ? "error" : ""} />
           )}
         />
         {errors.email && <p className="field-error">{errors.email.message}</p>}
@@ -76,7 +76,7 @@ export default function RegisterPage() {
           control={control}
           name="password"
           render={({ field }) => (
-            <Input.Password {...field} size="large" placeholder="At least 8 characters" status={errors.password ? "error" : ""} />
+            <Input.Password {...field} size="large" autoComplete="new-password" placeholder="At least 8 characters" status={errors.password ? "error" : ""} />
           )}
         />
         {errors.password && <p className="field-error">{errors.password.message}</p>}
