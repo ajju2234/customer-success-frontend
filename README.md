@@ -8,6 +8,20 @@ interaction management, AI insight views, and a metrics dashboard with charts.
 
 ---
 
+## 🚀 Live Demo
+
+**App:** https://customer-success-frontend-iota.vercel.app — every demo account's password is **`Test@1234`**.
+
+| Role | Email |
+|------|-------|
+| Admin (full access + user management) | `sarah.chen@csp.com` |
+| Manager (org-wide, no user mgmt) | `michael.rodriguez@csp.com` |
+| CSM (own customers only) | `emily.watson@csp.com` |
+
+Log in as each to see role-based access differ (the **Users** link is admin-only; a CSM sees only their own data). Full credentials + RBAC matrix are in the **backend repo's README**.
+
+---
+
 ## 🧱 Stack
 
 Next.js 14 (App Router) · TypeScript · Redux Toolkit · Axios · React Hook Form + Zod ·
