@@ -4,12 +4,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Pagination, Select } from "antd";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { InteractionFormModal } from "@/components/InteractionFormModal";
 import { EmptyState, PageHeader, SentimentBadge, Spinner, TableSkeleton, TypeBadge } from "@/components/ui";
-import { customersApi } from "@/lib/api";
-import { Customer, InteractionType, Sentiment } from "@/lib/types";
+import { InteractionType, Sentiment } from "@/lib/types";
 import { fetchInteractions } from "@/store/interactionsSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
@@ -38,13 +37,6 @@ function InteractionsInner() {
   const [sentiment, setSentiment] = useState<Sentiment | "">("");
   const [pageNum, setPageNum] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const [customers, setCustomers] = useState<Customer[]>([]);
-
-  const nameById = useMemo(() => {
-    const m = new Map<string, string>();
-    customers.forEach((c) => m.set(c.id, c.name));
-    return m;
-  }, [customers]);
 
   function load() {
     dispatch(
@@ -57,10 +49,6 @@ function InteractionsInner() {
       })
     );
   }
-
-  useEffect(() => {
-    customersApi.list({ limit: 100 }).then((p) => setCustomers(p.items));
-  }, []);
 
   useEffect(() => {
     load();
@@ -127,7 +115,7 @@ function InteractionsInner() {
                         {i.title}
                       </Link>
                     </td>
-                    <td className="text-slate-600 dark:text-slate-300">{nameById.get(i.customer_id) || "—"}</td>
+                    <td className="text-slate-600 dark:text-slate-300">{i.customer_name || "—"}</td>
                     <td>
                       <TypeBadge type={i.type} />
                     </td>
@@ -144,13 +132,15 @@ function InteractionsInner() {
 
         <div className="mt-4 flex items-center justify-between">
           <span className="text-sm text-slate-500">{total} total</span>
-          <Pagination
-            current={page}
-            pageSize={limit}
-            total={total}
-            showSizeChanger={false}
-            onChange={(p) => setPageNum(p)}
-          />
+          {total > limit && (
+            <Pagination
+              current={page}
+              pageSize={limit}
+              total={total}
+              showSizeChanger={false}
+              onChange={(p) => setPageNum(p)}
+            />
+          )}
         </div>
       </div>
 

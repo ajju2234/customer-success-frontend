@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { DeleteOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
 import { useConfirm } from "@/components/ConfirmDialog";
@@ -84,7 +85,7 @@ export default function InteractionDetailPage() {
               {interaction.type} · {new Date(interaction.meeting_date).toLocaleString()}
             </p>
           </div>
-          <Button danger onClick={onDelete}>
+          <Button danger icon={<DeleteOutlined />} onClick={onDelete}>
             Delete
           </Button>
         </div>

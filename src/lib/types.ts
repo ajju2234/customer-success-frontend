@@ -47,6 +47,7 @@ export interface Insight {
 export interface Interaction {
   id: string;
   customer_id: string;
+  customer_name: string | null;
   user_id: string | null;
   type: InteractionType;
   title: string;

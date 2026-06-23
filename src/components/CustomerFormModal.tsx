@@ -158,9 +158,11 @@ export function CustomerFormModal({
                   value={field.value ?? ""}
                   onChange={(e) => field.onChange(e.target.value)}
                   placeholder="+1 555 000 0000"
+                  status={errors.phone ? "error" : ""}
                 />
               )}
             />
+            {errors.phone && <p className="field-error">{errors.phone.message}</p>}
           </div>
         </div>
 
@@ -180,7 +182,7 @@ export function CustomerFormModal({
               />
             )}
           />
-          {errors.health_score && <p className="field-error">Must be between 0 and 100</p>}
+          {errors.health_score && <p className="field-error">{errors.health_score.message}</p>}
         </div>
 
         {serverError && <Alert type="error" message={serverError} showIcon />}

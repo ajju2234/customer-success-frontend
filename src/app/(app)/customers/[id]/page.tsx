@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
 import { useConfirm } from "@/components/ConfirmDialog";
@@ -82,8 +83,10 @@ export default function CustomerDetailPage() {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button onClick={() => setEditOpen(true)}>Edit</Button>
-            <Button danger onClick={onDelete}>
+            <Button icon={<EditOutlined />} onClick={() => setEditOpen(true)}>
+              Edit
+            </Button>
+            <Button danger icon={<DeleteOutlined />} onClick={onDelete}>
               Delete
             </Button>
           </div>
@@ -108,7 +111,9 @@ export default function CustomerDetailPage() {
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Interactions ({interactions.length})</h2>
           <Link href={`/interactions?customer_id=${customer.id}`}>
-            <Button type="primary">+ Log interaction</Button>
+            <Button type="primary" icon={<PlusOutlined />}>
+              Log interaction
+            </Button>
           </Link>
         </div>
         {interactions.length === 0 ? (

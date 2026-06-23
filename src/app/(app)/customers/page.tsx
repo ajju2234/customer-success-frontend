@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Pagination, Select } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -141,6 +141,7 @@ export default function CustomersPage() {
                         <Button
                           type="link"
                           size="small"
+                          icon={<EditOutlined />}
                           onClick={() => {
                             setEditing(c);
                             setModalOpen(true);
@@ -148,7 +149,7 @@ export default function CustomersPage() {
                         >
                           Edit
                         </Button>
-                        <Button type="link" size="small" danger onClick={() => onDelete(c)}>
+                        <Button type="link" size="small" danger icon={<DeleteOutlined />} onClick={() => onDelete(c)}>
                           Delete
                         </Button>
                       </div>
@@ -162,13 +163,15 @@ export default function CustomersPage() {
 
         <div className="mt-4 flex items-center justify-between">
           <span className="text-sm text-slate-500">{total} total</span>
-          <Pagination
-            current={page}
-            pageSize={limit}
-            total={total}
-            showSizeChanger={false}
-            onChange={(p) => setPageNum(p)}
-          />
+          {total > limit && (
+            <Pagination
+              current={page}
+              pageSize={limit}
+              total={total}
+              showSizeChanger={false}
+              onChange={(p) => setPageNum(p)}
+            />
+          )}
         </div>
       </div>
 

@@ -6,6 +6,22 @@ export const loginSchema = z.object({
 });
 export type LoginForm = z.infer<typeof loginSchema>;
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Enter a valid email"),
+});
+export type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirm: z.string().min(1, "Confirm your password"),
+  })
+  .refine((d) => d.password === d.confirm, {
+    message: "Passwords do not match",
+    path: ["confirm"],
+  });
+export type ResetPasswordForm = z.infer<typeof resetPasswordSchema>;
+
 export const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Enter a valid email"),
@@ -14,13 +30,22 @@ export const registerSchema = z.object({
 });
 export type RegisterForm = z.infer<typeof registerSchema>;
 
+const phoneRegex = /^[+]?[0-9][0-9\s().-]{6,19}$/;
+
 export const customerSchema = z.object({
   name: z.string().min(1, "Name is required").max(160),
-  company: z.string().max(160).optional().or(z.literal("")),
+  company: z.string().max(160, "Too long").optional().or(z.literal("")),
   email: z.string().email("Enter a valid email").optional().or(z.literal("")),
-  phone: z.string().max(40).optional().or(z.literal("")),
+  phone: z
+    .union([z.string().regex(phoneRegex, "Enter a valid phone number (7–20 digits)"), z.literal("")])
+    .optional(),
   status: z.enum(["prospect", "active", "at_risk", "churned"]),
-  health_score: z.number().min(0).max(100).nullable().optional(),
+  health_score: z
+    .number({ invalid_type_error: "Must be a number" })
+    .min(0, "Min 0")
+    .max(100, "Max 100")
+    .nullable()
+    .optional(),
 });
 export type CustomerForm = z.infer<typeof customerSchema>;
 
